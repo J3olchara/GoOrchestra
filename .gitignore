@@ -19,3 +19,9 @@
 
 # Go workspace file
 go.work
+
+# JetBrains trash
+.idea
+
+# Mac trash
+.DS_Store
