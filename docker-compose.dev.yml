@@ -1,0 +1,41 @@
+version: "3.8"
+
+services:
+  web:
+    env_file:
+      - path: env/dev.app.env
+        required: true
+      - path: env/dev.db.env
+        required: true
+    build:
+      context: .
+      dockerfile: Dockerfile
+    command:
+      go run ./app/cmd/main/main.go
+    hostname: "localhost"
+    ports:
+      - "8080:8080"
+    develop:
+      watch:
+        - action: sync
+          path: .
+          target: /app
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+    restart: always
+  db:
+    image: postgres:latest
+    env_file:
+      - path: env/dev.db.env
+        required: true
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    restart: always
+volumes:
+  postgres-data:
+
+
