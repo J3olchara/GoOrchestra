@@ -54,7 +54,7 @@ func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
 	arg2 := strconv.FormatFloat(task.Arg2, 'g', -1, 64)
 	expr.Expr = strings.ReplaceAll(expr.Expr, arg1+task.Operation+arg2, result)
 	expr.NormalizeExpression()
-	if !strings.ContainsAny(expr.Expr, "+-/*") {
+	if _, err = strconv.ParseFloat(expr.Expr, 8); err == nil {
 		_, err = db.DB.Conn.Exec(
 			"UPDATE expressions SET result=$1, blocked=false, status='done' where id=$2;",
 			expr.Expr, expr.ID,

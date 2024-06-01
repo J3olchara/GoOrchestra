@@ -43,6 +43,8 @@ func (h Handler) Create(w http.ResponseWriter, r *http.Request) {
 	var expr ExpressionServer
 	err := json.NewDecoder(r.Body).Decode(&expr)
 	expr.Expr = strings.ReplaceAll(expr.Expr, " ", "")
+	expr.Expr = strings.ReplaceAll(expr.Expr, "--", "+")
+	expr.NormalizeExpression()
 	if !ValidateExpression(expr.Expr) {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		return
