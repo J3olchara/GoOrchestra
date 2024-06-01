@@ -7,6 +7,9 @@ import (
 
 func ValidateExpression(expr string) bool {
 	expr = strings.ReplaceAll(expr, " ", "")
+	if expr[0] == '-' {
+		expr = "0" + expr
+	}
 	signs := []uint8{'+', '-', '*', '/'}
 	if !ContainsOnly(expr, "123456789+-*/()") || len(expr) == 0 || slices.Contains(signs, expr[0]) || slices.Contains(signs, expr[len(expr)-1]) {
 		return false
